@@ -37,6 +37,8 @@ A collection of scripts and configurations to quickly set up a multi-node Kubern
 A collection of scripts and configurations to audit Kubernetes (kind) clusters.  
 This project provides hands-on guidance for running CIS Benchmarks and performing basic Kubernetes security audits.
 
+> [Read more about kind Audit Playbook](./kind-audit-playbook/README.md)
+
 <br/>
 
 Each project is equipped with a `README.md` file that provides detailed instructions on setup, configuration, and usage. Please refer to the individual READMEs for more comprehensive guidance on each utility.
