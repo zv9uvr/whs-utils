@@ -17,8 +17,17 @@ This `docker-compose.yml`` file is used to set up a simple ELK (Elasticsearch, L
 
 ### Usage
 
-Create a .env file and set the necessary environment variables (ELASTIC_PASSWORD, KIBANA_PASSWORD, etc.).
-Start the stack using Docker Compose:
+For the basic lab stack, use `basic-elk`.
+
+Current `basic-elk` Elastic Stack version: `9.4.2`.
+
+```bash
+cd basic-elk
+docker compose up
+```
+
+For other stacks or custom settings, create/update a `.env` file and set the necessary environment variables (ELASTIC_PASSWORD, KIBANA_PASSWORD, etc.).
+Start the selected stack using Docker Compose:
 
 ```bash
 docker-compose up -d
