@@ -1,5 +1,3 @@
-version: "2.2"
-
 services:
     setup:
         image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -74,12 +72,16 @@ services:
             - ${ES_PORT}:9200
         environment:
             - node.name=es01
+            - node.roles=master,data,ingest
+            - node.store.allow_mmap=false
             - cluster.name=${CLUSTER_NAME}
             - cluster.initial_master_nodes=es01,es02,es03
             - discovery.seed_hosts=es02,es03
             - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+            - ES_JAVA_OPTS=${ES_JAVA_OPTS}
             - bootstrap.memory_lock=true
             - xpack.security.enabled=true
+            - xpack.security.enrollment.enabled=false
             - xpack.security.http.ssl.enabled=true
             - xpack.security.http.ssl.key=certs/es01/es01.key
             - xpack.security.http.ssl.certificate=certs/es01/es01.crt
@@ -90,7 +92,9 @@ services:
             - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
             - xpack.security.transport.ssl.verification_mode=certificate
             - xpack.license.self_generated.type=${LICENSE}
-        mem_limit: ${MEM_LIMIT}
+            - xpack.ml.enabled=false
+            - ingest.geoip.downloader.enabled=false
+        mem_limit: ${ES_MEM_LIMIT}
         ulimits:
             memlock:
                 soft: -1
@@ -114,11 +118,15 @@ services:
             - esdata02:/usr/share/elasticsearch/data
         environment:
             - node.name=es02
+            - node.roles=master,data,ingest
+            - node.store.allow_mmap=false
             - cluster.name=${CLUSTER_NAME}
             - cluster.initial_master_nodes=es01,es02,es03
             - discovery.seed_hosts=es01,es03
+            - ES_JAVA_OPTS=${ES_JAVA_OPTS}
             - bootstrap.memory_lock=true
             - xpack.security.enabled=true
+            - xpack.security.enrollment.enabled=false
             - xpack.security.http.ssl.enabled=true
             - xpack.security.http.ssl.key=certs/es02/es02.key
             - xpack.security.http.ssl.certificate=certs/es02/es02.crt
@@ -129,7 +137,9 @@ services:
             - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
             - xpack.security.transport.ssl.verification_mode=certificate
             - xpack.license.self_generated.type=${LICENSE}
-        mem_limit: ${MEM_LIMIT}
+            - xpack.ml.enabled=false
+            - ingest.geoip.downloader.enabled=false
+        mem_limit: ${ES_MEM_LIMIT}
         ulimits:
             memlock:
                 soft: -1
@@ -153,11 +163,15 @@ services:
             - esdata03:/usr/share/elasticsearch/data
         environment:
             - node.name=es03
+            - node.roles=master,data,ingest
+            - node.store.allow_mmap=false
             - cluster.name=${CLUSTER_NAME}
             - cluster.initial_master_nodes=es01,es02,es03
             - discovery.seed_hosts=es01,es02
+            - ES_JAVA_OPTS=${ES_JAVA_OPTS}
             - bootstrap.memory_lock=true
             - xpack.security.enabled=true
+            - xpack.security.enrollment.enabled=false
             - xpack.security.http.ssl.enabled=true
             - xpack.security.http.ssl.key=certs/es03/es03.key
             - xpack.security.http.ssl.certificate=certs/es03/es03.crt
@@ -168,7 +182,9 @@ services:
             - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
             - xpack.security.transport.ssl.verification_mode=certificate
             - xpack.license.self_generated.type=${LICENSE}
-        mem_limit: ${MEM_LIMIT}
+            - xpack.ml.enabled=false
+            - ingest.geoip.downloader.enabled=false
+        mem_limit: ${ES_MEM_LIMIT}
         ulimits:
             memlock:
                 soft: -1
@@ -203,7 +219,9 @@ services:
             - ELASTICSEARCH_USERNAME=kibana_system
             - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
             - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
-        mem_limit: ${MEM_LIMIT}
+            - NODE_OPTIONS=${KIBANA_NODE_OPTIONS}
+            - TELEMETRY_ENABLED=false
+        mem_limit: ${KIBANA_MEM_LIMIT}
         healthcheck:
             test:
                 [
